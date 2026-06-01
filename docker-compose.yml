@@ -5,10 +5,13 @@ services:
     networks:
       - backend
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
       MYSQL_DATABASE: testdb
       MYSQL_USER: testuser
-      MYSQL_PASSWORD: testpassword
+      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+    secrets:
+      - db_root_password
+      - db_password
     restart: unless-stopped
 
   php:
@@ -53,3 +56,9 @@ networks:
     driver: bridge
   frontend:
     driver: bridge
+
+secrets:
+  db_root_password:
+    file: ./db_root_password.txt
+  db_password:
+    file: ./db_password.txt
